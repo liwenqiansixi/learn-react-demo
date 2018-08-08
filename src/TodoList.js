@@ -1,10 +1,10 @@
-import React, { Component, Fragment } from 'react';
-import 'antd/dist/antd.css';
-import { Input, Button, List } from 'antd';
-import {getChangeInputAction, getSubmitAction, getRemoveItemAction} from './store/actionCreator';
+import React, { Component } from 'react';
+import { getChangeInputAction, getSubmitAction, getRemoveItemAction } from './store/actionCreator';
+import TodoListUI from './TodoListUI';
 import store from './store';
+import axios from 'axios';
 class TodoList extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = store.getState()
         this.handleChangeInput = this.handleChangeInput.bind(this);
@@ -15,36 +15,30 @@ class TodoList extends Component {
     }
     render() {
         return (
-            <Fragment>
-                <div style={{marginTop: '10px', marginLeft: '10px'}} value={this.state.inputVal}>
-                    <Input 
-                        onChange={this.handleChangeInput} 
-                        placeholder={this.state.placeHolder} 
-                        value={this.state.inputVal}
-                        style={{width: '300px', marginRight: '10px'}}/>
-                    <Button type="primary" onClick={this.handleSubmit}>提交</Button>
-                    <List
-                        style={{marginTop: '10px', width: '300px'}}
-                        bordered
-                        dataSource={this.state.lists}
-                        renderItem={(item,index) => (<List.Item onClick={this.handleRemoveItem.bind(this, index)}>{item}</List.Item>)}
-                    />
-                </div>
-            </Fragment>
+            <TodoListUI
+                handleChangeInput={this.handleChangeInput}
+                placeHolder={this.state.placeHolder}
+                inputVal={this.state.inputVal}
+                handleSubmit={this.handleSubmit}
+                lists={this.state.lists}
+                handleRemoveItem={this.handleRemoveItem} />
         )
     }
-    handleChangeInput (e) {
+    componentDidMount() {
+        axios.get('/api/list').then((res) => {console.log(res)})
+    }
+    handleChangeInput(e) {
         const action = getChangeInputAction(e.target.value)
         store.dispatch(action)
     }
-    handleSubmit () {
+    handleSubmit() {
         const action = getSubmitAction(store.getState().inputVal)
         store.dispatch(action)
     }
-    handleStoreChange () {
+    handleStoreChange() {
         this.setState(store.getState())
     }
-    handleRemoveItem (index) {
+    handleRemoveItem(index) {
         const action = getRemoveItemAction(index)
         store.dispatch(action)
     }
