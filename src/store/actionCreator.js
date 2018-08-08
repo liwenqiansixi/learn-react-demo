@@ -24,6 +24,7 @@ export const getTodoList = (data) => ({
     type: GET_TODO_LIST,
     data
 })
+// thunk中间件，action可以返回为一个函数，被接受。中间件处理函数为结果在dispatch传递给store
 export const getAsyncTodoList = () => {
     return (dispatch)=> {
         axios.get('/api/list').then(res => {
