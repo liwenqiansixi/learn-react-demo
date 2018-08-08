@@ -1,4 +1,4 @@
-import { CHANGE_INPUT, ADD_LISTS, REMOVE_ITEM } from './actionType'
+import { CHANGE_INPUT, ADD_LISTS, REMOVE_ITEM, GET_TODO_LIST } from './actionType'
 
 const defaultState = {
     placeHolder: '输入内容',
@@ -23,6 +23,11 @@ export default (state = defaultState, actions) => {
     if(actions.type === REMOVE_ITEM) {
         const newState = JSON.parse(JSON.stringify(state))
         newState.lists.splice(actions.index, 1)
+        return newState
+    }
+    if(actions.type === GET_TODO_LIST) {
+        const newState = JSON.parse(JSON.stringify(state))
+        newState.lists = actions.data
         return newState
     }
     return state

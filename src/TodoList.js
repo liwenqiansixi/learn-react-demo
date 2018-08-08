@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { getChangeInputAction, getSubmitAction, getRemoveItemAction } from './store/actionCreator';
+// import { getChangeInputAction, getSubmitAction, getRemoveItemAction, getTodoList } from './store/actionCreator';
+import { getChangeInputAction, getSubmitAction, getRemoveItemAction, getAsyncTodoList } from './store/actionCreator';
+
 import TodoListUI from './TodoListUI';
 import store from './store';
-import axios from 'axios';
+// import axios from 'axios';
 class TodoList extends Component {
     constructor(props) {
         super(props)
@@ -25,7 +27,8 @@ class TodoList extends Component {
         )
     }
     componentDidMount() {
-        axios.get('/api/list').then((res) => {console.log(res)})
+        const action = getAsyncTodoList();
+        store.dispatch(action)
     }
     handleChangeInput(e) {
         const action = getChangeInputAction(e.target.value)
